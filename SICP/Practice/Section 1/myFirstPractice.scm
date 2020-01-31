@@ -1,6 +1,7 @@
 (define (main)
         (println "AUTHOR: Sara Ann saraabrackett@westminster.net")
     )
-    
-(println "women should LEAVE")
-(println "no WOMEN in TECHNOLOGY")
+ (inspect (/ 999 999))
+ (inspect (/(* 404 2) 2)
+ (inspect (+ 100 526 10 184))
+ (inspect (- 8505 1111))
