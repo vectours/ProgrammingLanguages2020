@@ -8,4 +8,6 @@
 (inspect radius)
 (inspect (* pi (* radius radius)))
 
+; section 1.1.3: evaluating combinations
+(inspect (* (+ 2 (* 4 6) (+ 3 5 7))))
 
