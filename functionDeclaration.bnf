@@ -1,0 +1,9 @@
+# (define (square x) (* x x))
+
+functionDefinition : O_PAREN DEFINE defName defRule C_PAREN
+
+defName: O_PAREN VARIABLE optVarList C_PAREN
+
+optVarList : VARIABLE
+            | VARIABLE optVarList
+            | *empty*
