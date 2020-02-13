@@ -31,3 +31,7 @@
 (inspect (a-plus-abs-b 3 32))
 
 ; the function  a-plus-abs-b adds the value of the variable a to the absolute value of the variable b. that means that when b is negative, the function makes it positive 
+
+; exercise 1.6
+; this function won't work because the new if isn't a special form, so it won't be able to act the way if does
+; i traced this on paper mostly (sorry) but when i tried to substitute it i kept getting that it would be recursive to itself forever and not work?
