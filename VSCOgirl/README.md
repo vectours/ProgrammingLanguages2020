@@ -1,7 +1,7 @@
-#SKSKSKS WELCOME TO THE VSCOWORLD
+# SKSKSKS WELCOME TO THE VSCOWORLD
 
-###created by sara ann
+### created by sara ann
 
-####honors programming languages
+#### honors programming languages
 
-####spring 2020
+#### spring 2020
