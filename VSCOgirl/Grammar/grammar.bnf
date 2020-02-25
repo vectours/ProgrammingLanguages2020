@@ -14,7 +14,23 @@ optParamList: OBRACKET paramList CBRACKET
 paramList: KEY
          | KEY paramList
 
+# example expression that included a function call?? 
+expression: unary
+          | operator OBRACKET paramList CBRACKET 
 
+unary: NUMBER
+     | KEY
+     | MINUS unary
+     | OPAREN expression CPAREN
+
+operator: KEY
+        | PLUS
+        | MINUS
+        | TIMES
+        | DIVIDE
+        | MODULO
 
 # example function call: #U8 [a3 a5 uu9]
 functionCall: 
+
+
