@@ -34,8 +34,8 @@ operator: KEY
         | DIVIDE
         | MODULO
 
-# example function call: #U8 [a3 a5 uu9]
-functionCall: HASHTAG KEY optParamList
+# example function call: @U8 [a3 a5 uu9]
+functionCall: AT KEY optParamList
 
 block: statement
        | statement block
