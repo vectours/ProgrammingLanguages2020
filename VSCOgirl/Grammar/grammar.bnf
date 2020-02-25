@@ -11,10 +11,13 @@ declaration: HASHTAG KEY TILDE
 optParamList: OBRACKET paramList CBRACKET
             | *empty*
 
-paramList: KEY
-         | KEY paramList
+paramList: UNARY
+         | UNARY paramList
 
-# example expression that included a function call?? 
+# not sure how to differentiate between variables and functions? but isn't that the point? worried won't function
+# expressions = prefix notation for example: + [17 8 99 20 C2]
+#   example expression that included a function call?? 
+
 expression: unary
           | operator OBRACKET paramList CBRACKET 
 
@@ -22,6 +25,7 @@ unary: NUMBER
      | KEY
      | MINUS unary
      | OPAREN expression CPAREN
+     | functionCall 
 
 operator: KEY
         | PLUS
@@ -31,6 +35,8 @@ operator: KEY
         | MODULO
 
 # example function call: #U8 [a3 a5 uu9]
-functionCall: 
+functionCall: HASHTAG KEY optParamList
+
+
 
 
