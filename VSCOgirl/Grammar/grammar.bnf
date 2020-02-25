@@ -1,6 +1,12 @@
 # grammar for vsco bracket language
 # by sara ann brackett -- the westminster schools -- spring 2020
 
+# to add --
+#       1. comments
+#       2. more if statements / conditionals
+#       3. additional quirks for functions?
+#       4. reorganize top level? and add program requirements
+
 # syntax for declaring both variables and functions -- goal is to have both be treated the same as in scam?
 #   example declaration: #C1~ -- this one would just create a thing with no values
 #   example declaration: #C1 [a1] ()
@@ -53,4 +59,5 @@ whileLoop: WHILE OBRACKET boolStatement CBRACKET OBRACE block CBRACKET
 # trying to set up basic boolean functionality -- would have to differentiate between number & key?
 boolStatement: unary EQUALS unary
              | unary
+        
 
