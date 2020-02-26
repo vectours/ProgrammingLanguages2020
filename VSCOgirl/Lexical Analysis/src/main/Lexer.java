@@ -26,7 +26,8 @@ class Lexer {
         }
 
         switch(c) {
-            
+            // single charectar tokens
+            case '@' return new lexeme()
         }
     }
 

@@ -52,9 +52,9 @@ statement: declaration
          | whileLoop
 
 
-ifStatement: IF OBRACKET boolStatement CBRACKET OBRACE block CBRACKET
+ifStatement: IF OBRACKET boolStatement CBRACKET OBRACE block CBRACE
 
-whileLoop: WHILE OBRACKET boolStatement CBRACKET OBRACE block CBRACKET
+whileLoop: WHILE OBRACKET boolStatement CBRACKET OBRACE block CBRACE
 
 # trying to set up basic boolean functionality -- would have to differentiate between number & key?
 boolStatement: unary EQUALS unary
