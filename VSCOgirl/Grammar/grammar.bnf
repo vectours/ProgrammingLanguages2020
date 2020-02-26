@@ -17,8 +17,8 @@ declaration: HASHTAG KEY TILDE
 optParamList: OBRACKET paramList CBRACKET
             | *empty*
 
-paramList: UNARY
-         | UNARY paramList
+paramList: unary
+         | unary paramList
 
 # not sure how to differentiate between variables and functions? but isn't that the point? worried won't function
 # expressions = prefix notation for example: + [17 8 99 20 C2]

@@ -27,7 +27,25 @@ class Lexer {
 
         switch(c) {
             // single charectar tokens
-            case '@' return new lexeme()
+            case '@' return new lexeme(AT);
+            case '#' return new lexeme(HASHTAG);
+            case '~' return new lexeme(TILDE);
+
+            case '(' return new lexeme(OPAREN);
+            case ')' return new lexeme(CPAREN);
+            case '{' return new lexeme(OBRACE);
+            case '}' return new lexeme(CBRACE);
+            case '[' return new lexeme(OBRACKET);
+            case ']' return new lexeme(CBRACKET);
+
+            case '+' return new lexeme(PLUS);
+            case '-' return new lexeme(MINUS);
+            case '*' return new lexeme(TIMES);
+            case '/' return new lexeme(DIVIDE);
+            case '%' return new lexeme(MODULO);
+
+            case '$' return new lexeme(IF);
+            case '&' return new lexeme(WHILE);
         }
     }
 
