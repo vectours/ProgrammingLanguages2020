@@ -68,15 +68,47 @@ class Lexer {
     }
 
     private Lexeme lexNumber() throws IOException {
+        var ch;
+        String token = "";
+        ch = input.read();
+        while (isDigit(ch)){
+            token = token + ch;
+            ch = input.read();
+        }
+        input.pushback(ch);
 
+        return new Lexeme(NUMBER, Integer.parseInt(token));
     }
-    private Lexeme lexVariableOrKeyword() throws IOException {
+    private Lexeme lexVariable() throws IOException {
+        // no keywords that aren't symbols in my language
+        var ch;
+        String token = "";
+        ch = input.read();
+        while (isLetter(ch) || isDigit(ch)){
+            token = token + ch;
+            ch = input.read();
+        }
+        input.pushback(ch);
 
+        return new Lexeme(KEY, token);
     }
     private Lexeme lexString() throws IOException {
+        var ch;
+        String token = "";
+        ch = input.read();
+        while (ch != '\"'){
+            token = token + ch;
+            ch = input.read();
+        }
+        input.pushback(ch);
 
+        return new Lexeme(STRING, token);
     }
     private void skipWhiteSpace() throws IOException {
-
+        var ch1;
+        while (isWhiteSpace(ch)){
+            ch = Input.read();
+        }
+        Input.pushback(ch);
     }
 }
