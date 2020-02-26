@@ -1,3 +1,5 @@
+package LexicalAnalysis.src.main;
+
 import java.io.IOException;
 
 public class LexerTest {
@@ -11,7 +13,7 @@ public class LexerTest {
                 System.out.println(currentLexeme);
                 currentLexeme = lexer.lex();
             }
-        } catcj (IOException e) {
+        } catch (IOException e) {
             System.out.println("Error while lexing: " + e);
         }
     }
