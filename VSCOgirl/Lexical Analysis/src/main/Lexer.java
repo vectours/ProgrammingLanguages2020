@@ -46,7 +46,25 @@ class Lexer {
 
             case '$' return new lexeme(IF);
             case '&' return new lexeme(WHILE);
+
+            default:
+                // numbers, variables & strings
+                if Charectar.isDigit(ch) {
+                    input.pushback(ch);
+                    return lexNumber();
+                }
+                else if Charectar.isLetter(ch) {
+                    input.pushback(ch);
+                    return lexVariable();
+                }
+                else if (ch == '\"') {
+                    return lexString();
+                }
+                else {
+                    return new Lexeme(unknown, ch);
+                }
         }
+
     }
 
     private Lexeme lexNumber() throws IOException {
