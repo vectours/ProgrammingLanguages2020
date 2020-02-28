@@ -11,6 +11,7 @@ package main;
      //String typeName;
      String string;
      Integer integer;
+     Float fnumber;
 
  public Lexeme(Types type) {
      this.type = type;
@@ -23,7 +24,10 @@ package main;
          this.type = type;
          integer = newint;
      }
-
+     public Lexeme(Types type, int newint) {
+         this.type = type;
+         integer = newint;
+     }
      public Types getType() {
         return type;
      }

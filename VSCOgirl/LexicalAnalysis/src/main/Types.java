@@ -24,6 +24,7 @@ public enum Types {
     LESSTHAN,
 
     NUMBER,
+    FNUMBER,
     STRING,
     KEY,
 
