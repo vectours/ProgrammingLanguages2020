@@ -24,9 +24,9 @@ package main;
          this.type = type;
          integer = newint;
      }
-     public Lexeme(Types type, int newint) {
+     public Lexeme(Types type, float fnumber) {
          this.type = type;
-         integer = newint;
+         this.fnumber = fnumber;
      }
      public Types getType() {
         return type;
@@ -40,6 +40,9 @@ package main;
          }
          else if (integer != null) {
              token += ": " + integer;
+         }
+         else if (fnumber != null) {
+             token += ": " + fnumber;
          }
          return token;
      }

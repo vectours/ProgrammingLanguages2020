@@ -91,6 +91,9 @@ class Lexer {
             token = token + ch;
             ch = (char) input.read();
         }
+        if (ch == '.') {
+            //need to write
+        }
         input.unread(ch);
 
         return new Lexeme(Types.NUMBER, Integer.parseInt(token));
