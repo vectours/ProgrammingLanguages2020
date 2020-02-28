@@ -1,3 +1,4 @@
+package main;
 
 import java.io.*;
 
@@ -16,70 +17,121 @@ class Lexer {
 
     }
 
-    lexeme lex() throws IOException { skipWhiteSpace(); char c = (char)
-     input.read(); // can also say input.unread(c) and it will put it back if
-     (isEndOfInput(c)) { System.out.println("end of input reached."); return new
-     lexeme(Types.END_OF_INPUT); }
-     
-     switch (c) { // single charectar tokens case '@': return new lexeme(AT); case
-     '#': return new lexeme(HASHTAG); case '~': return new lexeme(TILDE);
-     
-     case '(': return new lexeme(OPAREN); case ')': return new lexeme(CPAREN);
-     case '{': return new lexeme(OBRACE); case '}': return new lexeme(CBRACE);
-     case '[': return new lexeme(OBRACKET); case ']': return new lexeme(CBRACKET);
-     
-     case '+': return new lexeme(PLUS); case '-': return new lexeme(MINUS); case
-     '*': return new lexeme(TIMES); case '/': return new lexeme(DIVIDE); case '%':
-     return new lexeme(MODULO);
-     
-     case '$': return new lexeme(IF); case '&': return new lexeme(WHILE);
-     
-     default: // numbers, variables & strings if (Character.isDigit(ch)) {
-     input.pushback(ch); return lexNumber(); } else if (Character.isLetter(ch)) {
-     input.pushback(ch); return lexVariable(); } else if (ch == '\"') { return
-     lexString(); } else { return new Lexeme(UNKNOWN, ch); } }
+    public Lexeme lex() throws IOException {
+        skipWhiteSpace();
+        char c = (char) input.read();
 
+        switch (c) { // single charectar tokens
+            case '@':
+                return new Lexeme(Types.AT);
+            case '#':
+                return new Lexeme(Types.HASHTAG);
+            case '~':
+                return new Lexeme(Types.TILDE);
+
+            case '(':
+                return new Lexeme(Types.OPAREN);
+            case ')':
+                return new Lexeme(Types.CPAREN);
+            case '{':
+                return new Lexeme(Types.OBRACE);
+            case '}':
+                return new Lexeme(Types.CBRACE);
+            case '[':
+                return new Lexeme(Types.OBRACKET);
+            case ']':
+                return new Lexeme(Types.CBRACKET);
+
+            case '+':
+                return new Lexeme(Types.PLUS);
+            case '-':
+                return new Lexeme(Types.MINUS);
+            case '*':
+                return new Lexeme(Types.TIMES);
+            case '/':
+                return new Lexeme(Types.DIVIDE);
+            case '%':
+                return new Lexeme(Types.MODULO);
+
+            case '=':
+                return new Lexeme(Types.EQUALS);
+            case '>':
+                return new Lexeme(Types.GREATERTHAN);
+            case '<':
+                return new Lexeme(Types.LESSTHAN);
+
+            case '$':
+                return new Lexeme(Types.IF);
+            case '&':
+                return new Lexeme(Types.WHILE);
+
+            default:
+                if (Character.isLetter(c)) {
+                    input.unread(c);
+                    return lexVariable();
+                } else if (c == '\"') {
+                    return lexString();
+                } else if (Character.isDigit(c)){
+                    input.unread(c);
+                    return lexNumber();
+                }
+                else if (isEndOfInput(c)){
+                    return new Lexeme(Types.END_OF_INPUT);
+                }
+                else {
+                    return new Lexeme(Types.UNKNOWN, c);
+                }
+        }
     }
 
     private Lexeme lexNumber() throws IOException {
-        var ch;
+        char ch = (char) input.read();;
         String token = "";
-        ch = input.read();
-        while (isDigit(ch)) {
+        while (Character.isDigit(ch)) {
             token = token + ch;
-            ch = input.read();
+            ch = (char) input.read();
         }
-        input.pushback(ch);
+        input.unread(ch);
 
-        return new Lexeme(NUMBER, Integer.parseInt(token));
+        return new Lexeme(Types.NUMBER, Integer.parseInt(token));
     }
 
-    private Lexeme lexVariable() throws IOException { // no keywords that aren't
-     symbols in my language var ch; String token = ""; ch = input.read(); while
-     (isLetter(ch) || isDigit(ch)) { token = token + ch; ch = input.read(); }
-     input.pushback(ch);
-     
-     return new Lexeme(KEY, token); }
+    private Lexeme lexVariable() throws IOException { // no keywords that aren't symbols in my language var ch;
+        String token = "";
+        char ch = (char) input.read();
+        while
+        (Character.isLetter(ch) || Character.isDigit(ch)) {
+            token = token + ch;
+            ch = (char) input.read();
+        }
+        input.unread(ch);
+
+        return new Lexeme(Types.KEY, token);
+    }
 
     private Lexeme lexString() throws IOException {
-        var ch;
         String token = "";
-        ch = input.read();
+        char ch = (char) input.read();
         while (ch != '\"') {
             token = token + ch;
-            ch = input.read();
+            ch = (char) input.read();
         }
-        input.pushback(ch);
+        input.unread(ch);
 
-        return new Lexeme(STRING, token);
+        return new Lexeme(Types.STRING, token);
     }
 
-    private void skipWhiteSpace() throws IOException {
-        var ch1;
-        while (isWhiteSpace(ch)) {
-            ch = Input.read();
+    private boolean isEndOfInput(char c) {
+        int EOF = 65535;
+        return c == EOF;
+    }
+
+    public void skipWhiteSpace() throws IOException {
+        char ch = (char) input.read();
+        while (Character.isWhitespace(ch)) {
+            ch = (char) input.read();
         }
-        Input.pushback(ch);
+        input.unread(ch);
     }
 
 }

@@ -1,1 +1,7 @@
 .scam_history
+.idea/
+*.iml
+*.class
+out/
+TestInput/
+*g*/.DS_Store
