@@ -59,6 +59,8 @@ class Lexer {
                 return new Lexeme(Types.GREATERTHAN);
             case '<':
                 return new Lexeme(Types.LESSTHAN);
+            case '!':
+                return new Lexeme(Types.NOT);
 
             case '$':
                 return new Lexeme(Types.IF);
