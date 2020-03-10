@@ -128,7 +128,6 @@ class Lexer {
             token = token + ch;
             ch = (char) input.read();
         }
-        input.unread(ch);
 
         return new Lexeme(Types.STRING, token);
     }
