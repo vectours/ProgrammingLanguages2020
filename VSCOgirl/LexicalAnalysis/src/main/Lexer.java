@@ -92,11 +92,18 @@ class Lexer {
             ch = (char) input.read();
         }
         if (ch == '.') {
-            //need to write
+            token = token + ch;
+            ch = (char) input.read();
+            while (Character.isDigit(ch)) {
+                token = token + ch;
+                ch = (char) input.read();
+            }
+            return new Lexeme(Types.FNUMBER, Float.parseFloat(token));
         }
-        input.unread(ch);
-
-        return new Lexeme(Types.NUMBER, Integer.parseInt(token));
+        else {
+            input.unread(ch);
+            return new Lexeme(Types.NUMBER, Integer.parseInt(token));
+        }
     }
 
     private Lexeme lexVariable() throws IOException { // no keywords that aren't symbols in my language var ch;
