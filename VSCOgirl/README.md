@@ -12,7 +12,9 @@ This language was developed according to the processes set forth by [Dr. John C.
 2. [Notation](#notation)
 1. [Defining Variables and Functions](#defining-variables)
 1. [Calling Functions](#calling-functions)
-1. [Index of Special Charecters](#special-charecters)
+2. [Writing Conditional Statements](#writing-conditional-statements)
+1. [Index of Special Characters](#special-characters)
+
 
 ## Hello, world!
 
@@ -34,6 +36,12 @@ For example, adding 5 and 6 would look like this:
 If you wanted to nest addition statements, the notation for that would be:
 ```
 + [ (+ [5 6] ) (+ [3 4 5]) ]
+```
+###Comments
+Commenting is done using `:`
+A commented out line would look like this:
+```
+: helpful information about your code :
 ```
 
 ## Defining Variables and Functions
@@ -64,8 +72,24 @@ An example function call using the parameters x and y:
 
 Returns are implicit in VSCOgirl, so the final valuee or final expression evaluated at the end of the block of code is returned.
 
-
-## Special Charecters
+## Writing Conditional Statements
+VSCOgirl supports two types of conditional statements: 
+1. `if` statements, which use `$`
+2. `while` loops, which use `&`
+### Booleans
+In VSCOgirl, booleans look a little different than in Java.
+`^` represents `true`, while `^^` represents `false`
+### If Statements
+An example `if` statement would look like this:
+```
+$[= x y] { y + 10}
+```
+### While Loops
+An example `while` loop would look like this:
+```
+&[= x y] {y + 10}
+```
+## Special Characters
 
 | Symbol | Functionality |
 | :---: | --- |
@@ -77,3 +101,4 @@ Returns are implicit in VSCOgirl, so the final valuee or final expression evalua
 | `$` |  `if` statement |
 | `&` |  `while` loop |
 | `{ }` | Contains blocks of code / statements to be evaluated, used with `&` (`while`) loops |
+| `:` | Comments out a single line |
