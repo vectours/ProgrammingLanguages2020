@@ -13,5 +13,7 @@ public enum Types {
 
     IF, WHILE,
 
+    COMMENT,
+
     END_OF_INPUT, UNKNOWN
 }

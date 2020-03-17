@@ -83,6 +83,8 @@ class Lexer {
                     }
                     input.unread(c);
                     return new Lexeme(Types.BOOL, true);
+                } else if (c == ':') {
+                    return lexComment();
                 } else if (isEndOfInput(c)) {
                     return new Lexeme(Types.END_OF_INPUT);
                 } else {
@@ -134,6 +136,16 @@ class Lexer {
         }
 
         return new Lexeme(Types.STRING, token);
+    }
+
+    private Lexeme lexComment() throws IOException {
+        String token = "";
+        char ch = (char) input.read();
+        while (ch != ':') {
+            token = token + ch;
+            ch = (char) input.read();
+        }
+        return new Lexeme(Types.COMMENT);
     }
 
     private boolean isEndOfInput(char c) {
