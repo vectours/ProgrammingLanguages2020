@@ -37,7 +37,7 @@ If you wanted to nest addition statements, the notation for that would be:
 ```
 + [ (+ [5 6] ) (+ [3 4 5]) ]
 ```
-###Comments
+### Comments
 Commenting is done using `:`
 A commented out line would look like this:
 ```
@@ -101,4 +101,4 @@ An example `while` loop would look like this:
 | `$` |  `if` statement |
 | `&` |  `while` loop |
 | `{ }` | Contains blocks of code / statements to be evaluated, used with `&` (`while`) loops |
-| `:` | Comments out a single line |
+| `: :` | Comments out enclosed statement |
