@@ -73,21 +73,27 @@ class Lexer {
                     return lexVariable();
                 } else if (c == '\"') {
                     return lexString();
-                } else if (Character.isDigit(c)){
+                } else if (Character.isDigit(c)) {
                     input.unread(c);
                     return lexNumber();
-                }
-                else if (isEndOfInput(c)){
+                } else if (c == '^') {
+                    c = (char) input.read();
+                    if (c == '^') {
+                        return new Lexeme(Types.BOOL, false);
+                    }
+                    input.unread(c);
+                    return new Lexeme(Types.BOOL, true);
+                } else if (isEndOfInput(c)) {
                     return new Lexeme(Types.END_OF_INPUT);
-                }
-                else {
+                } else {
                     return new Lexeme(Types.UNKNOWN, c);
                 }
         }
     }
 
     private Lexeme lexNumber() throws IOException {
-        char ch = (char) input.read();;
+        char ch = (char) input.read();
+        ;
         String token = "";
         while (Character.isDigit(ch)) {
             token = token + ch;
@@ -101,8 +107,7 @@ class Lexer {
                 ch = (char) input.read();
             }
             return new Lexeme(Types.FNUMBER, Float.parseFloat(token));
-        }
-        else {
+        } else {
             input.unread(ch);
             return new Lexeme(Types.NUMBER, Integer.parseInt(token));
         }
@@ -111,8 +116,7 @@ class Lexer {
     private Lexeme lexVariable() throws IOException { // no keywords that aren't symbols in my language var ch;
         String token = "";
         char ch = (char) input.read();
-        while
-        (Character.isLetter(ch) || Character.isDigit(ch)) {
+        while (Character.isLetter(ch) || Character.isDigit(ch)) {
             token = token + ch;
             ch = (char) input.read();
         }

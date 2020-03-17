@@ -1,64 +1,67 @@
-# grammar for vsco bracket language
-# by sara ann brackett -- the westminster schools -- spring 2020
+//# grammar for vsco bracket language
+//# by sara ann brackett -- the westminster schools -- spring 2020
+//
+//# to add --
+//#       1. comments
+//#       2. more if statements / conditionals
+//#       3. additional quirks for functions?
+//#       4. reorganize top level? and add program requirements
 
-# to add --
-#       1. comments
-#       2. more if statements / conditionals
-#       3. additional quirks for functions?
-#       4. reorganize top level? and add program requirements
-
-# syntax for declaring both variables and functions -- goal is to have both be treated the same as in scam?
-#   example declaration: #C1~ -- this one would just create a thing with no values
-#   example declaration: #C1 [a1] ()
-# current idea is that all variables & functions will be in the format AA## where you can have a-zz letters and 0-99 numbers as a pair
-declaration: HASHTAG KEY TILDE 
+//# syntax for declaring both variables and functions -- goal is to have both be treated the same as in scam?
+//#   example declaration: #C1~ -- this one would just create a thing with no values
+//#   example declaration: #C1 [a1] ()
+//# current idea is that all variables & functions will be in the format AA## where you can have a-zz letters and 0-99 numbers as a pair
+declaration::= HASHTAG KEY TILDE
             | HASHTAG KEY optParamList expression TILDE
 
-optParamList: OBRACKET paramList CBRACKET
-            | *empty*
+optParamList::= OBRACKET paramList CBRACKET
+            | empty
 
-paramList: unary
+paramList::= unary
          | unary paramList
 
-# not sure how to differentiate between variables and functions? but isn't that the point? worried won't function
-# expressions = prefix notation for example: + [17 8 99 20 C2]
-#   example expression that included a function call?? 
+//# not sure how to differentiate between variables and functions? but isn't that the point? worried won't function
+//# expressions = prefix notation for example: + [17 8 99 20 C2]
+//#   example expression that included a function call??
 
-expression: unary
+expression::= unary
           | operator OBRACKET paramList CBRACKET 
 
-unary: NUMBER
+unary::= NUMBER
      | KEY
      | MINUS unary
      | OPAREN expression CPAREN
      | functionCall 
      | STRING
+     | FNUMBER
 
-operator: KEY
+operator::= KEY
         | PLUS
         | MINUS
         | TIMES
         | DIVIDE
         | MODULO
 
-# example function call: @U8 [a3 a5 uu9]
-functionCall: AT KEY optParamList
+//# example function call: @U8 [a3 a5 uu9]
+functionCall::= AT KEY optParamList
 
-block: statement
+block::= statement
        | statement block
-       | *empty*
+       | empty
 
-statement: declaration
+statement::= declaration
          | ifStatement
          | whileLoop
 
 
-ifStatement: IF OBRACKET boolStatement CBRACKET OBRACE block CBRACE
+ifStatement::= IF OBRACKET boolStatement CBRACKET OBRACE block CBRACE
 
-whileLoop: WHILE OBRACKET boolStatement CBRACKET OBRACE block CBRACE
+whileLoop::= WHILE OBRACKET boolStatement CBRACKET OBRACE block CBRACE
 
-# trying to set up basic boolean functionality -- would have to differentiate between number & key?
-boolStatement: unary EQUALS unary
-             | unary
+//# trying to set up basic boolean functionality -- would have to differentiate between number & key?
+boolStatement::= unary EQUALS unary
+             | unary GREATERTHAN unary
+             | unary LESSTHAN unary
+             | NOT boolStatement
         
 

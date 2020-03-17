@@ -1,36 +1,17 @@
 package main;
 
 public enum Types {
-    OPAREN,
-    CPAREN,
-    OBRACKET,
-    CBRACKET,
-    OBRACE,
-    CBRACE,
+    OPAREN, CPAREN, OBRACKET, CBRACKET, OBRACE, CBRACE,
 
-    HASHTAG,
-    TILDE,
-    AT,
+    HASHTAG, TILDE, AT,
 
-    MINUS,
-    PLUS,
-    TIMES,
-    DIVIDE,
-    MODULO,
+    MINUS, PLUS, TIMES, DIVIDE, MODULO,
 
-    EQUALS,
-    NOT,
-    GREATERTHAN,
-    LESSTHAN,
+    EQUALS, NOT, GREATERTHAN, LESSTHAN,
 
-    NUMBER,
-    FNUMBER,
-    STRING,
-    KEY,
+    NUMBER, FNUMBER, STRING, KEY, BOOL,
 
-    IF,
-    WHILE,
+    IF, WHILE,
 
-    END_OF_INPUT,
-    UNKNOWN
+    END_OF_INPUT, UNKNOWN
 }
