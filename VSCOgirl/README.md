@@ -41,7 +41,7 @@ If you wanted to nest addition statements, the notation for that would be:
 Commenting is done using `:`
 A commented out line would look like this:
 ```
-: helpful information about your code
+: helpful information about your code :
 ```
 
 ## Defining Variables and Functions
