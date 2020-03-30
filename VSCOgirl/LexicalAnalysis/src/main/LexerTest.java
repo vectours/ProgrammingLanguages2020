@@ -3,10 +3,10 @@ package main;
 import java.io.IOException;
 
 public class LexerTest {
-    private static final String testInputDirectory = "./src/main/TestInput";
+
 
     public static void main(String[] args) {
-        Lexer lexer = new Lexer("VSCOgirl/LexicalAnalysis/src/main/Test Input/myTest.txt");
+        Lexer lexer = new Lexer("../TestInput/scratchFile.txt");
 
         try {
             Lexeme currentLexeme = lexer.lex();
