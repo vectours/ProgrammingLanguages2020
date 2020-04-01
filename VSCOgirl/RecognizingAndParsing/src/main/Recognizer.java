@@ -35,7 +35,7 @@ public class Recognizer {
     }
     private void matchNoAdvance(Types type) throws IOException{
         if(!(check(type))) {
-            throw new IOException("Syntax Error");
+            throw new IOException("Expected "+ type+ " but found " + currentLexeme);
         }
     }
     private void advance() throws IOException {
@@ -43,6 +43,7 @@ public class Recognizer {
     }
 
     // MATCHING FUNCTIONS
+
 
     // PENDING FUNCTIONS
 }

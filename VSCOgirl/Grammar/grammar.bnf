@@ -45,18 +45,20 @@ operator::= KEY
 //# example function call: @U8 [a3 a5 uu9]
 functionCall::= AT KEY optParamList
 
-block::= statement
+optStatementList ::= statement
        | statement block
        | empty
 
 statement::= declaration
          | ifStatement
          | whileLoop
+         | functionCall
 
 
-ifStatement::= IF OBRACKET boolStatement CBRACKET OBRACE block CBRACE
 
-whileLoop::= WHILE OBRACKET boolStatement CBRACKET OBRACE block CBRACE
+ifStatement::= IF OBRACKET boolStatement CBRACKET OBRACE optStatementList CBRACE
+
+whileLoop::= WHILE OBRACKET boolStatement CBRACKET OBRACE optStatementList CBRACE
 
 //# trying to set up basic boolean functionality -- would have to differentiate between number & key?
 boolStatement::= EQUALS unary unary
