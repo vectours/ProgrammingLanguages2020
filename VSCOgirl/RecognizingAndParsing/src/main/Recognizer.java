@@ -1,5 +1,7 @@
 package main;
 
+import sun.tools.java.Type;
+
 import java.io.IOException;
 
 public class Recognizer {
@@ -56,9 +58,18 @@ public class Recognizer {
         return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending();
     }
     private boolean declarationPending() throws IOException {
-
+        return check(Types.HASHTAG) &&  check(Types.KEY)
+                && ((optParamListPending() && expressionPending() && check(Types.TILDE))
+                        || check(Types.TILDE));
     }
     private boolean ifStatementPending() throws IOException {
+        return check(Types.IF)
+                && check(Types.OBRACKET)
+                && boolStatementPending()
+                && check(Types.CBRACKET)
+                && check(Types.OBRACE);
+                && optStatementListPending()
+                && check(Types.CBRACE);
 
     }
     private boolean whileLoopPending() throws IOException {
