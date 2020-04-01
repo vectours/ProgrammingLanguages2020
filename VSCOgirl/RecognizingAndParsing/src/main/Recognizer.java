@@ -16,7 +16,7 @@ public class Recognizer {
         try{
             System.out.println("Parsing" + inputfilepath + "...");
             currentLexeme = lexer.lex();
-            //program();
+            optStatementList();
             System.out.println(inputfilepath + "is syntactically valid.");
 
         }
@@ -43,7 +43,40 @@ public class Recognizer {
     }
 
     // MATCHING FUNCTIONS
+    private void optStatementList() throws IOException {
+        if(statementListPending()) {
+            statementList();
+        }
+    }
+    private boolean statementListPending() throws IOException {
+        return statementPending() ;
+        // NEED TO ADD IF EMPTY CONDITION AND WHAT TO DO
+    }
+    private boolean statementPending() throws IOException {
+        return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending();
+    }
+    private boolean declarationPending() throws IOException {
 
+    }
+    private boolean ifStatementPending() throws IOException {
+
+    }
+    private boolean whileLoopPending() throws IOException {
+
+    }
+    private boolean functionCallPending() throws IOException {
+
+    }
+    private void statementList() throws IOException {
+        statement();
+        if(statementListPending()) {
+            statementList();
+        }
+    }
+
+    private boolean Pending() throws IOException {
+
+    }
 
     // PENDING FUNCTIONS
 }

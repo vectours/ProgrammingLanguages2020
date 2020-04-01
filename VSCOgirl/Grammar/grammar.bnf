@@ -45,9 +45,11 @@ operator::= KEY
 //# example function call: @U8 [a3 a5 uu9]
 functionCall::= AT KEY optParamList
 
-optStatementList ::= statement
-       | statement block
+optStatementList ::= statementList
        | empty
+
+statementList::= statement
+    | statement statementList
 
 statement::= declaration
          | ifStatement
