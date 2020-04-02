@@ -57,6 +57,12 @@ public class Recognizer {
     private boolean statementPending()  {
         return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending();
     }
+    private void statementList() throws IOException {
+        statement();
+        if(statementListPending()) {
+            statementList();
+        }
+    }
     private boolean declarationPending() {
         return check(Types.HASHTAG);
     }
@@ -75,7 +81,9 @@ public class Recognizer {
         }
     }
     private boolean paramListPending()  {
-        return check()
+        if(check(Types.OBRACKET)) {
+
+        }
     }
     private boolean ifStatementPending()  {
         return check(Types.IF)
@@ -87,20 +95,46 @@ public class Recognizer {
                 && check(Types.CBRACE);
 
     }
-    private boolean whileLoopPending()  {
-
-    }
-    private boolean functionCallPending()  {
-
-    }
-    private void statementList() throws IOException {
-        statement();
+    private void ifStatement() throws IOException {
+        match(Types.IF);
+        match(Types.OBRACKET);
+        boolStatement();
+        match(Types.CBRACKET);
+        match(Types.OBRACE);
         if(statementListPending()) {
             statementList();
         }
+        match(Types.CBRACE);
     }
+
+    private boolean whileLoopPending()  {
+        return check(Types.WHILE);
+    }
+    private void whileLoop() throws IOException {
+        match(Types.WHILE);
+        match(Types.OBRACKET);
+        boolStatement();
+        match(Types.CBRACKET);
+        match(Types.OBRACE);
+        if(statementListPending()) {
+            statementList();
+        }
+        match(Types.CBRACE);
+    }
+
+    private boolean functionCallPending()  {
+        return check(Types.AT);
+    }
+    private void functionCall() throws IOException {
+        match(Types.AT);
+        match(Types.KEY);
+        if(paramListPending()){
+            paramList();
+        }
+    }
+
 /*
-    private boolean Pending() throws IOException {
+    private boolean Pending()  {
 
     }
     private void function() throws IOException {

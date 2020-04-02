@@ -17,6 +17,7 @@ declaration::= HASHTAG KEY TILDE
 optParamList::= OBRACKET paramList CBRACKET
             | empty
 
+
 paramList::= unary
          | unary paramList
 
@@ -24,8 +25,7 @@ paramList::= unary
 //# expressions = prefix notation for example: + [17 8 99 20 C2]
 //#   example expression that included a function call??
 
-expression::= unary
-          | operator OBRACKET paramList CBRACKET 
+expression::= operator OBRACKET paramList CBRACKET
 
 unary::= NUMBER
      | KEY
