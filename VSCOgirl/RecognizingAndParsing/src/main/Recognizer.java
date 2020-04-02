@@ -121,6 +121,26 @@ public class Recognizer {
         }
         match(Types.CBRACE);
     }
+    private boolean boolStatementPending()  {
+        return check(Types.EQUALS) || check(Types.GREATERTHAN) || check(Types.LESSTHAN) || check(Types.NOT);
+    }
+    private void boolStatement() throws IOException {
+        if(check(Types.NOT)) {
+            match(Types.NOT);
+            boolStatement();
+        }
+        else if (check(Types.EQUALS)) {
+            match(Types.EQUALS);
+        }
+        else if (check(Types.GREATERTHAN)) {
+            match(Types.GREATERTHAN);
+        }
+        else if (check(Types.GREATERTHAN)) {
+            match(Types.EQUALS);
+        }
+        unary();
+        unary();
+    }
 
     private boolean functionCallPending()  {
         return check(Types.AT);
@@ -130,6 +150,39 @@ public class Recognizer {
         match(Types.KEY);
         if(paramListPending()){
             paramList();
+        }
+    }
+    private boolean unaryPending()  {
+        return check(Types.FNUMBER)
+                || check(Types.NUMBER)
+                || check(Types.KEY)
+                || check(Types.MINUS)
+                || check(Types.STRING)
+                || functionCallPending()
+                || expressionPending();
+    }
+    private void unary() throws IOException {
+        if(check(Types.NUMBER)) {
+            match(Types.NUMBER);
+        }
+        else if(check(Types.FNUMBER)) {
+            match(Types.FNUMBER);
+        }
+        else if(check(Types.STRING)) {
+            match(Types.STRING);
+        }
+        else if(check(Types.KEY)) {
+            match(Types.KEY);
+        }
+        else if(check(Types.MINUS)) {
+            match(Types.MINUS);
+            unary();
+        }
+        else if(functionCallPending()) {
+            functionCall();
+        }
+        else {
+            expression();
         }
     }
 

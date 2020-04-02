@@ -30,7 +30,7 @@ expression::= operator OBRACKET paramList CBRACKET
 unary::= NUMBER
      | KEY
      | MINUS unary
-     | OPAREN expression CPAREN
+     | expression
      | functionCall 
      | STRING
      | FNUMBER
