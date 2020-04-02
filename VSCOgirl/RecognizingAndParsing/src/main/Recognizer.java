@@ -50,19 +50,34 @@ public class Recognizer {
             statementList();
         }
     }
-    private boolean statementListPending() throws IOException {
+    private boolean statementListPending()  {
         return statementPending() ;
         // NEED TO ADD IF EMPTY CONDITION AND WHAT TO DO
     }
-    private boolean statementPending() throws IOException {
+    private boolean statementPending()  {
         return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending();
     }
-    private boolean declarationPending() throws IOException {
-        return check(Types.HASHTAG) &&  check(Types.KEY)
-                && ((optParamListPending() && expressionPending() && check(Types.TILDE))
-                        || check(Types.TILDE));
+    private boolean declarationPending() {
+        return check(Types.HASHTAG);
     }
-    private boolean ifStatementPending() throws IOException {
+    private void declaration() throws IOException {
+        match(Types.HASHTAG);
+        match(Types.KEY);
+        if(check(Types.TILDE)) {
+            match(Types.TILDE);
+        }
+        else {
+            if(paramListPending()) {
+                paramList();
+            }
+            expression();
+            match(Types.TILDE);
+        }
+    }
+    private boolean paramListPending()  {
+        return check()
+    }
+    private boolean ifStatementPending()  {
         return check(Types.IF)
                 && check(Types.OBRACKET)
                 && boolStatementPending()
@@ -72,10 +87,10 @@ public class Recognizer {
                 && check(Types.CBRACE);
 
     }
-    private boolean whileLoopPending() throws IOException {
+    private boolean whileLoopPending()  {
 
     }
-    private boolean functionCallPending() throws IOException {
+    private boolean functionCallPending()  {
 
     }
     private void statementList() throws IOException {
@@ -84,10 +99,13 @@ public class Recognizer {
             statementList();
         }
     }
-
+/*
     private boolean Pending() throws IOException {
 
     }
+    private void function() throws IOException {
 
+    }
+*/
     // PENDING FUNCTIONS
 }
