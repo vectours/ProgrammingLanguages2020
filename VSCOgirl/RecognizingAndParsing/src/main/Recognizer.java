@@ -194,8 +194,16 @@ public class Recognizer {
         else if(functionCallPending()) {
             functionCall();
         }
-        else {
+        else if(expressionPending()) {
             expression();
+        }
+        else if(boolStatementPending()) {
+            boolStatement();
+        }
+        else{
+            match(Types.OPAREN);
+            unary();
+            match(Types.CPAREN);
         }
     }
     private boolean expressionPending()  {
