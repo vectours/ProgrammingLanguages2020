@@ -14,9 +14,10 @@
 declaration::= HASHTAG KEY TILDE
             | HASHTAG KEY optParamList expression TILDE
 
-optParamList::= OBRACKET paramList CBRACKET
+optParamList::= containedParamList
             | empty
 
+containedParamList::= OBRACKET paramList CBRACKET
 
 paramList::= unary
          | unary paramList
@@ -25,7 +26,7 @@ paramList::= unary
 //# expressions = prefix notation for example: + [17 8 99 20 C2]
 //#   example expression that included a function call??
 
-expression::= operator OBRACKET paramList CBRACKET
+expression::= operator optParamList
 
 unary::= NUMBER
      | KEY
@@ -34,6 +35,8 @@ unary::= NUMBER
      | functionCall 
      | STRING
      | FNUMBER
+     | boolStatement
+     | OPAREN unary CPAREN
 
 operator::= KEY
         | PLUS
@@ -58,14 +61,15 @@ statement::= declaration
 
 
 
-ifStatement::= IF OBRACKET boolStatement CBRACKET OBRACE optStatementList CBRACE
+ifStatement::= IF  boolStatement  OBRACE optStatementList CBRACE
 
-whileLoop::= WHILE OBRACKET boolStatement CBRACKET OBRACE optStatementList CBRACE
+whileLoop::= WHILE  boolStatement  OBRACE optStatementList CBRACE
 
 //# trying to set up basic boolean functionality -- would have to differentiate between number & key?
-boolStatement::= EQUALS unary unary
-             | GREATERTHAN unary  unary
-             | LESSTHAN unary unary
+boolStatement::= EQUALS boolStatement boolStatement
+             | GREATERTHAN boolStatement  boolStatement
+             | LESSTHAN boolStatement boolStatement
              | NOT boolStatement
+             | BOOL
         
 

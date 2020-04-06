@@ -122,7 +122,7 @@ public class Recognizer {
         match(Types.CBRACE);
     }
     private boolean boolStatementPending()  {
-        return check(Types.EQUALS) || check(Types.GREATERTHAN) || check(Types.LESSTHAN) || check(Types.NOT);
+        return check(Types.EQUALS) || check(Types.GREATERTHAN) || check(Types.LESSTHAN) || check(Types.NOT) || check(Types.BOOL);
     }
     private void boolStatement() throws IOException {
         if(check(Types.NOT)) {
@@ -135,11 +135,17 @@ public class Recognizer {
         else if (check(Types.GREATERTHAN)) {
             match(Types.GREATERTHAN);
         }
-        else if (check(Types.GREATERTHAN)) {
-            match(Types.EQUALS);
+        else if (check(Types.LESSTHAN)) {
+            match(Types.LESSTHAN);
         }
-        unary();
-        unary();
+
+        if (!(check(Types.BOOL))){
+            boolStatement();
+            boolStatement();
+        }
+        else {
+            match(Types.BOOL);
+        }
     }
 
     private boolean functionCallPending()  {
@@ -184,6 +190,13 @@ public class Recognizer {
         else {
             expression();
         }
+    }
+    private boolean expressionPending()  {
+        return check(Types.KEY) || check(Types.PLUS) || check(Types.MINUS) || check(Types.TIMES) || check(Types.DIVIDE) || check(Types.MODULO);
+    }
+    private void expression() throws IOException {
+        operator();
+        containedParamList();
     }
 
 /*
