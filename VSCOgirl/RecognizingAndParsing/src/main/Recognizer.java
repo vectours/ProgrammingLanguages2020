@@ -63,6 +63,20 @@ public class Recognizer {
             statementList();
         }
     }
+    private void statement() throws IOException {
+        if (declarationPending()) {
+            declaration();
+        }
+        else if(ifStatementPending()) {
+            ifStatement();
+        }
+        else if(whileLoopPending()){
+            whileLoop();
+        }
+        else {
+            functionCall();
+        }
+    }
     private boolean declarationPending() {
         return check(Types.HASHTAG);
     }
@@ -73,26 +87,19 @@ public class Recognizer {
             match(Types.TILDE);
         }
         else {
-            if(paramListPending()) {
-                paramList();
+            if(containedParamListPending()) {
+                containedParamList();
             }
             expression();
             match(Types.TILDE);
         }
     }
-    private boolean paramListPending()  {
-        if(check(Types.OBRACKET)) {
-
-        }
+    private boolean containedParamListPending()  {
+        return check(Types.OBRACKET);
     }
+
     private boolean ifStatementPending()  {
-        return check(Types.IF)
-                && check(Types.OBRACKET)
-                && boolStatementPending()
-                && check(Types.CBRACKET)
-                && check(Types.OBRACE);
-                && optStatementListPending()
-                && check(Types.CBRACE);
+        return check(Types.IF);
 
     }
     private void ifStatement() throws IOException {
@@ -154,8 +161,8 @@ public class Recognizer {
     private void functionCall() throws IOException {
         match(Types.AT);
         match(Types.KEY);
-        if(paramListPending()){
-            paramList();
+        if(containedParamListPending()){
+            containedParamList();
         }
     }
     private boolean unaryPending()  {
@@ -196,9 +203,41 @@ public class Recognizer {
     }
     private void expression() throws IOException {
         operator();
-        containedParamList();
+        if(containedParamListPending()) {
+            paramList();
+        }
     }
-
+    private void containedParamList() throws IOException {
+        match(Types.OBRACKET);
+        paramList();
+        match(Types.CBRACKET);
+    }
+    private void paramList() throws IOException {
+        unary();
+        if(unaryPending()) {
+            paramList();
+        }
+    }
+    private void operator() throws IOException {
+        if(check(Types.KEY)) {
+            match(Types.KEY);
+        }
+        else if(check(Types.PLUS)){
+            match(Types.PLUS);
+        }
+        else if(check(Types.MINUS)){
+            match(Types.MINUS);
+        }
+        else if(check(Types.TIMES)){
+            match(Types.TIMES);
+        }
+        else if(check(Types.DIVIDE)){
+            match(Types.DIVIDE);
+        }
+        else {
+            match(Types.MODULO);
+        }
+    }
 /*
     private boolean Pending()  {
 
