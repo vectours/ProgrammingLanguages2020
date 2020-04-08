@@ -44,18 +44,11 @@ public class Recognizer {
         currentLexeme = lexer.lex();
     }
 
-    // MATCHING FUNCTIONS
+    // TOP LEVEL -- STATEMENT STRUCTURE
     private void optStatementList() throws IOException {
         if(statementListPending()) {
             statementList();
         }
-    }
-    private boolean statementListPending()  {
-        return statementPending() ;
-        // NEED TO ADD IF EMPTY CONDITION AND WHAT TO DO
-    }
-    private boolean statementPending()  {
-        return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending();
     }
     private void statementList() throws IOException {
         statement();
@@ -77,9 +70,15 @@ public class Recognizer {
             functionCall();
         }
     }
-    private boolean declarationPending() {
-        return check(Types.HASHTAG);
+
+    private boolean statementListPending()  {
+        return statementPending() ;
     }
+    private boolean statementPending()  {
+        return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending();
+    }
+
+    // DECLARATION STRUCTURE
     private void declaration() throws IOException {
         match(Types.HASHTAG);
         match(Types.KEY);
@@ -94,86 +93,26 @@ public class Recognizer {
             match(Types.TILDE);
         }
     }
+    private void containedParamList() throws IOException {
+        match(Types.OBRACKET);
+        paramList();
+        match(Types.CBRACKET);
+    }
+    private void paramList() throws IOException {
+        unary();
+        if(unaryPending()) {
+            paramList();
+        }
+    }
+
+    private boolean declarationPending() {
+        return check(Types.HASHTAG);
+    }
     private boolean containedParamListPending()  {
         return check(Types.OBRACKET);
     }
 
-    private boolean ifStatementPending()  {
-        return check(Types.IF);
-
-    }
-    private void ifStatement() throws IOException {
-        match(Types.IF);
-        match(Types.OBRACKET);
-        boolStatement();
-        match(Types.CBRACKET);
-        match(Types.OBRACE);
-        if(statementListPending()) {
-            statementList();
-        }
-        match(Types.CBRACE);
-    }
-
-    private boolean whileLoopPending()  {
-        return check(Types.WHILE);
-    }
-    private void whileLoop() throws IOException {
-        match(Types.WHILE);
-        match(Types.OBRACKET);
-        boolStatement();
-        match(Types.CBRACKET);
-        match(Types.OBRACE);
-        if(statementListPending()) {
-            statementList();
-        }
-        match(Types.CBRACE);
-    }
-    private boolean boolStatementPending()  {
-        return check(Types.EQUALS) || check(Types.GREATERTHAN) || check(Types.LESSTHAN) || check(Types.NOT) || check(Types.BOOL);
-    }
-    private void boolStatement() throws IOException {
-        if(check(Types.NOT)) {
-            match(Types.NOT);
-            boolStatement();
-        }
-        else if (check(Types.EQUALS)) {
-            match(Types.EQUALS);
-        }
-        else if (check(Types.GREATERTHAN)) {
-            match(Types.GREATERTHAN);
-        }
-        else if (check(Types.LESSTHAN)) {
-            match(Types.LESSTHAN);
-        }
-
-        if (!(check(Types.BOOL))){
-            boolStatement();
-            boolStatement();
-        }
-        else {
-            match(Types.BOOL);
-        }
-    }
-
-    private boolean functionCallPending()  {
-        return check(Types.AT);
-    }
-    private void functionCall() throws IOException {
-        match(Types.AT);
-        match(Types.KEY);
-        if(containedParamListPending()){
-            containedParamList();
-        }
-    }
-    private boolean unaryPending()  {
-        return check(Types.FNUMBER)
-                || check(Types.NUMBER)
-                || check(Types.KEY)
-                || check(Types.MINUS)
-                || check(Types.STRING)
-                || functionCallPending()
-                || expressionPending();
-    }
+    // UNARY STRUCTURE
     private void unary() throws IOException {
         if(check(Types.NUMBER)) {
             match(Types.NUMBER);
@@ -206,23 +145,9 @@ public class Recognizer {
             match(Types.CPAREN);
         }
     }
-    private boolean expressionPending()  {
-        return check(Types.KEY) || check(Types.PLUS) || check(Types.MINUS) || check(Types.TIMES) || check(Types.DIVIDE) || check(Types.MODULO);
-    }
     private void expression() throws IOException {
         operator();
         if(containedParamListPending()) {
-            paramList();
-        }
-    }
-    private void containedParamList() throws IOException {
-        match(Types.OBRACKET);
-        paramList();
-        match(Types.CBRACKET);
-    }
-    private void paramList() throws IOException {
-        unary();
-        if(unaryPending()) {
             paramList();
         }
     }
@@ -246,13 +171,87 @@ public class Recognizer {
             match(Types.MODULO);
         }
     }
-/*
-    private boolean Pending()  {
+
+    private boolean unaryPending()  {
+        return check(Types.FNUMBER)
+                || check(Types.NUMBER)
+                || check(Types.KEY)
+                || check(Types.MINUS)
+                || check(Types.STRING)
+                || functionCallPending()
+                || expressionPending();
+    }
+    private boolean expressionPending()  {
+        return check(Types.KEY) || check(Types.PLUS) || check(Types.MINUS) || check(Types.TIMES) || check(Types.DIVIDE) || check(Types.MODULO);
+    }
+
+    // FUNCTION CALL
+    private void functionCall() throws IOException {
+        match(Types.AT);
+        match(Types.KEY);
+        if(containedParamListPending()){
+            containedParamList();
+        }
+    }
+    private boolean functionCallPending()  {
+        return check(Types.AT);
+    }
+
+    // IF & WHILE
+    private void ifStatement() throws IOException {
+        match(Types.IF);
+        match(Types.OBRACKET);
+        boolStatement();
+        match(Types.CBRACKET);
+        match(Types.OBRACE);
+        if(statementListPending()) {
+            statementList();
+        }
+        match(Types.CBRACE);
+    }
+    private void whileLoop() throws IOException {
+        match(Types.WHILE);
+        match(Types.OBRACKET);
+        boolStatement();
+        match(Types.CBRACKET);
+        match(Types.OBRACE);
+        if(statementListPending()) {
+            statementList();
+        }
+        match(Types.CBRACE);
+    }
+    private void boolStatement() throws IOException {
+        if(check(Types.NOT)) {
+            match(Types.NOT);
+            boolStatement();
+        }
+        else if (check(Types.EQUALS)) {
+            match(Types.EQUALS);
+        }
+        else if (check(Types.GREATERTHAN)) {
+            match(Types.GREATERTHAN);
+        }
+        else if (check(Types.LESSTHAN)) {
+            match(Types.LESSTHAN);
+        }
+
+        if (!(check(Types.BOOL))){
+            boolStatement();
+            boolStatement();
+        }
+        else {
+            match(Types.BOOL);
+        }
+    }
+
+    private boolean ifStatementPending()  {
+        return check(Types.IF);
 
     }
-    private void function() throws IOException {
-
+    private boolean whileLoopPending()  {
+        return check(Types.WHILE);
     }
-*/
-    // PENDING FUNCTIONS
+    private boolean boolStatementPending()  {
+        return check(Types.EQUALS) || check(Types.GREATERTHAN) || check(Types.LESSTHAN) || check(Types.NOT) || check(Types.BOOL);
+    }
 }

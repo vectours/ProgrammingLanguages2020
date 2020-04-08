@@ -7,6 +7,17 @@
 //#       3. additional quirks for functions?
 //#       4. reorganize top level? and add program requirements
 
+optStatementList ::= statementList
+       | empty
+
+statementList::= statement
+    | statement statementList
+
+statement::= declaration
+         | functionCall
+         | ifStatement
+         | whileLoop
+
 //# syntax for declaring both variables and functions -- goal is to have both be treated the same as in scam?
 //#   example declaration: #C1~ -- this one would just create a thing with no values
 //#   example declaration: #C1 [a1] ()
@@ -22,21 +33,20 @@ containedParamList::= OBRACKET paramList CBRACKET
 paramList::= unary
          | unary paramList
 
+unary::= NUMBER
+     | KEY
+     | MINUS unary
+     | expression
+     | functionCall
+     | STRING
+     | FNUMBER
+     | boolStatement
+     | OPAREN unary CPAREN
 //# not sure how to differentiate between variables and functions? but isn't that the point? worried won't function
 //# expressions = prefix notation for example: + [17 8 99 20 C2]
 //#   example expression that included a function call??
 
 expression::= operator optParamList
-
-unary::= NUMBER
-     | KEY
-     | MINUS unary
-     | expression
-     | functionCall 
-     | STRING
-     | FNUMBER
-     | boolStatement
-     | OPAREN unary CPAREN
 
 operator::= KEY
         | PLUS
@@ -47,18 +57,6 @@ operator::= KEY
 
 //# example function call: @U8 [a3 a5 uu9]
 functionCall::= AT KEY optParamList
-
-optStatementList ::= statementList
-       | empty
-
-statementList::= statement
-    | statement statementList
-
-statement::= declaration
-         | ifStatement
-         | whileLoop
-         | functionCall
-
 
 
 ifStatement::= IF  boolStatement  OBRACE optStatementList CBRACE
@@ -71,5 +69,3 @@ boolStatement::= EQUALS boolStatement boolStatement
              | LESSTHAN boolStatement boolStatement
              | NOT boolStatement
              | BOOL
-        
-
