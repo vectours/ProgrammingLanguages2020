@@ -23,7 +23,7 @@ statement::= declaration
 //#   example declaration: #C1 [a1] ()
 //# current idea is that all variables & functions will be in the format AA## where you can have a-zz letters and 0-99 numbers as a pair
 declaration::= HASHTAG KEY TILDE
-            | HASHTAG KEY optParamList expression TILDE
+            | HASHTAG KEY optParamList unary TILDE
 
 optParamList::= containedParamList
             | empty

@@ -1,6 +1,6 @@
 package main;
 
-import sun.tools.java.Type;
+//import sun.tools.java.Type;
 
 import java.io.IOException;
 
@@ -33,10 +33,14 @@ public class Recognizer {
     }
     private void match(Types type) throws IOException {
         matchNoAdvance(type);
+        System.out.println("Matched: "+ type);
         advance();
     }
     private void matchNoAdvance(Types type) throws IOException{
         if(!(check(type))) {
+            if(type == Types.MODULO) {
+                throw new IOException("Expected an operator or function but found " + currentLexeme);
+            }
             throw new IOException("Expected "+ type+ " but found " + currentLexeme);
         }
     }
@@ -46,17 +50,20 @@ public class Recognizer {
 
     // TOP LEVEL -- STATEMENT STRUCTURE
     private void optStatementList() throws IOException {
+        System.out.println("optStatementList");
         if(statementListPending()) {
             statementList();
         }
     }
     private void statementList() throws IOException {
+        System.out.println("statementList");
         statement();
         if(statementListPending()) {
             statementList();
         }
     }
     private void statement() throws IOException {
+        System.out.println("statement");
         if (declarationPending()) {
             declaration();
         }
@@ -80,6 +87,7 @@ public class Recognizer {
 
     // DECLARATION STRUCTURE
     private void declaration() throws IOException {
+        System.out.println("declaration");
         match(Types.HASHTAG);
         match(Types.KEY);
         if(check(Types.TILDE)) {
@@ -89,16 +97,18 @@ public class Recognizer {
             if(containedParamListPending()) {
                 containedParamList();
             }
-            expression();
-            match(Types.TILDE);
+            unary();
+
         }
     }
     private void containedParamList() throws IOException {
+        System.out.println("containedParamList");
         match(Types.OBRACKET);
         paramList();
         match(Types.CBRACKET);
     }
     private void paramList() throws IOException {
+        System.out.println("paramList");
         unary();
         if(unaryPending()) {
             paramList();
@@ -114,6 +124,7 @@ public class Recognizer {
 
     // UNARY STRUCTURE
     private void unary() throws IOException {
+        System.out.println("unary");
         if(check(Types.NUMBER)) {
             match(Types.NUMBER);
         }
@@ -146,12 +157,14 @@ public class Recognizer {
         }
     }
     private void expression() throws IOException {
+        System.out.println("expression");
         operator();
         if(containedParamListPending()) {
-            paramList();
+            containedParamList();
         }
     }
     private void operator() throws IOException {
+        System.out.println("operator");
         if(check(Types.KEY)) {
             match(Types.KEY);
         }
@@ -187,6 +200,7 @@ public class Recognizer {
 
     // FUNCTION CALL
     private void functionCall() throws IOException {
+        System.out.println("functionCall");
         match(Types.AT);
         match(Types.KEY);
         if(containedParamListPending()){
@@ -199,6 +213,7 @@ public class Recognizer {
 
     // IF & WHILE
     private void ifStatement() throws IOException {
+        System.out.println("ifStatement");
         match(Types.IF);
         match(Types.OBRACKET);
         boolStatement();
@@ -210,6 +225,7 @@ public class Recognizer {
         match(Types.CBRACE);
     }
     private void whileLoop() throws IOException {
+        System.out.println("whileLoop");
         match(Types.WHILE);
         match(Types.OBRACKET);
         boolStatement();
@@ -221,6 +237,7 @@ public class Recognizer {
         match(Types.CBRACE);
     }
     private void boolStatement() throws IOException {
+        System.out.println("boolStatement");
         if(check(Types.NOT)) {
             match(Types.NOT);
             boolStatement();
