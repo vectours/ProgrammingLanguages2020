@@ -82,12 +82,12 @@ In VSCOgirl, booleans look a little different than in Java.
 ### If Statements
 An example `if` statement would look like this:
 ```
-$[= x y] { @POST ["This condition was met! Time to celebrate!"]}
+$[= x y] { @POST ["This condition was met! Time to celebrate!"] }
 ```
 ### While Loops
 An example `while` loop would look like this:
 ```
-&[= x y] {#F2 (^^) }
+&[= x y] { #F2 (^^) }
 ```
 ## Special Characters
 
@@ -98,6 +98,7 @@ An example `while` loop would look like this:
 | `@` | Function call |
 | `[ ]` | Contains a parameter list `[parameter parameter parameter ...]` |
 | `( )` | Contains definitions / expressions `(* [x x] )` or `(+ [2 4] )`|
+| `{ }` | Contains the block of statements that execute with an `if` statement or `while` loop | 
 | `$` |  `if` statement |
 | `&` |  `while` loop |
 | `{ }` | Contains blocks of code / statements to be evaluated, used with `&` (`while`) loops |
