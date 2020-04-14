@@ -244,17 +244,18 @@ public class Recognizer {
         }
         else if (check(Types.EQUALS)) {
             match(Types.EQUALS);
+            unary();
+            unary();
         }
         else if (check(Types.GREATERTHAN)) {
             match(Types.GREATERTHAN);
+            unary();
+            unary();
         }
         else if (check(Types.LESSTHAN)) {
             match(Types.LESSTHAN);
-        }
-
-        if (!(check(Types.BOOL))){
-            boolStatement();
-            boolStatement();
+            unary();
+            unary();
         }
         else {
             match(Types.BOOL);
