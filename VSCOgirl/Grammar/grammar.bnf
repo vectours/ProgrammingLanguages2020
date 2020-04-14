@@ -17,13 +17,14 @@ statement::= declaration
          | functionCall
          | ifStatement
          | whileLoop
+         | unary
 
 //# syntax for declaring both variables and functions -- goal is to have both be treated the same as in scam?
 //#   example declaration: #C1~ -- this one would just create a thing with no values
 //#   example declaration: #C1 [a1] ()
 //# current idea is that all variables & functions will be in the format AA## where you can have a-zz letters and 0-99 numbers as a pair
 declaration::= HASHTAG KEY TILDE
-            | HASHTAG KEY optParamList unary TILDE
+            | HASHTAG KEY optParamList statementList TILDE
 
 optParamList::= containedParamList
             | empty

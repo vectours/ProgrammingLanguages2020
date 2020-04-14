@@ -73,8 +73,11 @@ public class Recognizer {
         else if(whileLoopPending()){
             whileLoop();
         }
-        else {
+        else if(functionCallPending()){
             functionCall();
+        }
+        else {
+            unary();
         }
     }
 
@@ -82,7 +85,7 @@ public class Recognizer {
         return statementPending() ;
     }
     private boolean statementPending()  {
-        return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending();
+        return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending() || unaryPending();
     }
 
     // DECLARATION STRUCTURE
@@ -97,7 +100,7 @@ public class Recognizer {
             if(containedParamListPending()) {
                 containedParamList();
             }
-            unary();
+            statementList();
 
         }
     }
