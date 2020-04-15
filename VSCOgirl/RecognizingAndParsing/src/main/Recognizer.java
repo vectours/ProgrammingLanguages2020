@@ -247,9 +247,7 @@ public class Recognizer {
         boolStatement();
         match(Types.CBRACKET);
         match(Types.OBRACE);
-        if(statementListPending()) {
-            statementList();
-        }
+        optStatementList();
         match(Types.CBRACE);
         System.out.println("Completed an ifStatement.");
     }
@@ -261,9 +259,7 @@ public class Recognizer {
         boolStatement();
         match(Types.CBRACKET);
         match(Types.OBRACE);
-        if(statementListPending()) {
-            statementList();
-        }
+        optStatementList();
         match(Types.CBRACE);
         System.out.println("Completed a whileLoop.");
     }
