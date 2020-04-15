@@ -8,6 +8,7 @@ public class Recognizer {
     private String inputfilepath;
     private Lexer lexer;
     private Lexeme currentLexeme;
+    private String currentNonTerminal;
 
     Recognizer(String inputfilepath){
         this.inputfilepath = inputfilepath;
@@ -19,7 +20,7 @@ public class Recognizer {
             System.out.println("Parsing" + inputfilepath + "...");
             currentLexeme = lexer.lex();
             optStatementList();
-            System.out.println(inputfilepath + "is syntactically valid.");
+            System.out.println(inputfilepath + " is syntactically valid.");
 
         }
         catch(IOException e) {
@@ -41,7 +42,7 @@ public class Recognizer {
             if(type == Types.MODULO) {
                 throw new IOException("Expected an operator or function but found " + currentLexeme);
             }
-            throw new IOException("Expected "+ type+ " but found " + currentLexeme);
+            throw new IOException("Expected "+ type+ " but found " + currentLexeme + " while parsing a " + currentNonTerminal);
         }
     }
     private void advance() throws IOException {
@@ -50,20 +51,23 @@ public class Recognizer {
 
     // TOP LEVEL -- STATEMENT STRUCTURE
     private void optStatementList() throws IOException {
-        System.out.println("optStatementList");
+        currentNonTerminal = "optStatementList";
+
         if(statementListPending()) {
             statementList();
         }
+        System.out.println("Completed an optStatementList.");
     }
     private void statementList() throws IOException {
-        System.out.println("statementList");
+        currentNonTerminal = "statementList";
         statement();
         if(statementListPending()) {
             statementList();
         }
+        System.out.println("Completed a statementList.");
     }
     private void statement() throws IOException {
-        System.out.println("statement");
+        currentNonTerminal = "statement";
         if (declarationPending()) {
             declaration();
         }
@@ -79,6 +83,7 @@ public class Recognizer {
         else {
             unary();
         }
+        System.out.println("Completed a statement.");
     }
 
     private boolean statementListPending()  {
@@ -90,7 +95,7 @@ public class Recognizer {
 
     // DECLARATION STRUCTURE
     private void declaration() throws IOException {
-        System.out.println("declaration");
+        currentNonTerminal = "declaration";
         match(Types.HASHTAG);
         match(Types.KEY);
         if(check(Types.TILDE)) {
@@ -103,19 +108,22 @@ public class Recognizer {
             statementList();
 
         }
+        System.out.println("Completed a declaration.");
     }
     private void containedParamList() throws IOException {
-        System.out.println("containedParamList");
+        currentNonTerminal = "containedParamList";
         match(Types.OBRACKET);
         paramList();
         match(Types.CBRACKET);
+        System.out.println("Completed a containedParamList.");
     }
     private void paramList() throws IOException {
-        System.out.println("paramList");
+        currentNonTerminal = "paramList";
         unary();
         if(unaryPending()) {
             paramList();
         }
+        System.out.println("Completed a paramList");
     }
 
     private boolean declarationPending() {
@@ -127,7 +135,7 @@ public class Recognizer {
 
     // UNARY STRUCTURE
     private void unary() throws IOException {
-        System.out.println("unary");
+        currentNonTerminal = "unary";
         if(check(Types.NUMBER)) {
             match(Types.NUMBER);
         }
@@ -158,16 +166,18 @@ public class Recognizer {
             unary();
             match(Types.CPAREN);
         }
+        System.out.println("Completed a unary");
     }
     private void expression() throws IOException {
-        System.out.println("expression");
+        currentNonTerminal = "expression";
         operator();
         if(containedParamListPending()) {
             containedParamList();
         }
+        System.out.println("Completed an expression.");
     }
     private void operator() throws IOException {
-        System.out.println("operator");
+        currentNonTerminal = "operator";
         if(check(Types.KEY)) {
             match(Types.KEY);
         }
@@ -186,6 +196,7 @@ public class Recognizer {
         else {
             match(Types.MODULO);
         }
+        System.out.println("Completed an operator.");
     }
 
     private boolean unaryPending()  {
@@ -203,12 +214,13 @@ public class Recognizer {
 
     // FUNCTION CALL
     private void functionCall() throws IOException {
-        System.out.println("functionCall");
+        currentNonTerminal = "functionCall";
         match(Types.AT);
         match(Types.KEY);
         if(containedParamListPending()){
             containedParamList();
         }
+        System.out.println("Completed a functionCall.");
     }
     private boolean functionCallPending()  {
         return check(Types.AT);
@@ -216,7 +228,8 @@ public class Recognizer {
 
     // IF & WHILE
     private void ifStatement() throws IOException {
-        System.out.println("ifStatement");
+        currentNonTerminal = "ifStatement";
+
         match(Types.IF);
         match(Types.OBRACKET);
         boolStatement();
@@ -226,9 +239,11 @@ public class Recognizer {
             statementList();
         }
         match(Types.CBRACE);
+        System.out.println("Completed an ifStatement.");
     }
     private void whileLoop() throws IOException {
-        System.out.println("whileLoop");
+        currentNonTerminal = "while loop";
+
         match(Types.WHILE);
         match(Types.OBRACKET);
         boolStatement();
@@ -238,9 +253,11 @@ public class Recognizer {
             statementList();
         }
         match(Types.CBRACE);
+        System.out.println("Completed a whileLoop");
     }
     private void boolStatement() throws IOException {
-        System.out.println("boolStatement");
+        currentNonTerminal = "boolStatement";
+
         if(check(Types.NOT)) {
             match(Types.NOT);
             boolStatement();
@@ -263,6 +280,7 @@ public class Recognizer {
         else {
             match(Types.BOOL);
         }
+        System.out.println("Completed a boolStatement.");
     }
 
     private boolean ifStatementPending()  {
