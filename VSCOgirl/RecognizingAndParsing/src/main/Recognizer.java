@@ -39,6 +39,7 @@ public class Recognizer {
     }
     private void matchNoAdvance(Types type) throws IOException{
         if(!(check(type))) {
+            System.out.println("Syntax Error on line " + lexer.getLineNumber());
             if(type == Types.MODULO) {
                 throw new IOException("Expected an operator or function but found " + currentLexeme);
             }
@@ -89,6 +90,9 @@ public class Recognizer {
         else if(functionCallPending()){
             functionCall();
         }
+        else if(check(Types.COMMENT)){
+            match(Types.COMMENT);
+        }
         else {
             unary();
         }
@@ -99,7 +103,8 @@ public class Recognizer {
         return statementPending() ;
     }
     private boolean statementPending()  {
-        return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending() || unaryPending();
+        return declarationPending() || ifStatementPending() || whileLoopPending() || functionCallPending() || unaryPending() || check(Types.COMMENT);
+
     }
 
     // DECLARATION STRUCTURE

@@ -4,6 +4,7 @@ import java.io.*;
 
 class Lexer {
     private PushbackReader input;
+    private int lineNumber = 1;
 
     Lexer(String inputFilePath) {
         try {
@@ -21,7 +22,7 @@ class Lexer {
         skipWhiteSpace();
         char c = (char) input.read();
 
-        switch (c) { // single charectar tokens
+        switch (c) { // single character tokens
             case '@':
                 return new Lexeme(Types.AT);
             case '#':
@@ -142,6 +143,9 @@ class Lexer {
         String token = "";
         char ch = (char) input.read();
         while (ch != ':') {
+            if(ch == '\n') {
+                lineNumber +=1;
+            }
             token = token + ch;
             ch = (char) input.read();
         }
@@ -156,9 +160,15 @@ class Lexer {
     public void skipWhiteSpace() throws IOException {
         char ch = (char) input.read();
         while (Character.isWhitespace(ch)) {
+            if(ch == '\n') {
+                lineNumber +=1;
+            }
             ch = (char) input.read();
         }
         input.unread(ch);
     }
 
+    public int getLineNumber() {
+        return lineNumber;
+    }
 }

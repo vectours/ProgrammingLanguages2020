@@ -18,6 +18,7 @@ statement::= declaration
          | functionCall
          | ifStatement
          | whileLoop
+         | COMMENT
          | unary
 
 // DECLARATION STRUCTURE
