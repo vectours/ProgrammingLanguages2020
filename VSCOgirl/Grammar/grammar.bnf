@@ -7,6 +7,7 @@
 //#       3. additional quirks for functions?
 //#       4. reorganize top level? and add program requirements
 
+// TOP LEVEL -- STATEMENT STRUCTURE
 optStatementList ::= statementList
        | empty
 
@@ -18,6 +19,8 @@ statement::= declaration
          | ifStatement
          | whileLoop
          | unary
+
+// DECLARATION STRUCTURE
 
 //# syntax for declaring both variables and functions -- goal is to have both be treated the same as in scam?
 //#   example declaration: #C1~ -- this one would just create a thing with no values
@@ -33,6 +36,8 @@ containedParamList::= OBRACKET paramList CBRACKET
 
 paramList::= unary
          | unary paramList
+
+// UNARY STRUCTURE
 
 unary::= NUMBER
      | KEY
@@ -56,9 +61,13 @@ operator::= KEY
         | DIVIDE
         | MODULO
 
+// FUNCTION CALL
+
 //# example function call: @U8 [a3 a5 uu9]
 functionCall::= AT KEY optParamList
 
+
+// IF & WHILE
 
 ifStatement::= IF  boolStatement  OBRACE optStatementList CBRACE
 

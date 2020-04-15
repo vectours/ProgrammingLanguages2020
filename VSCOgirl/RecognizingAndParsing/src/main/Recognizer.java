@@ -42,6 +42,15 @@ public class Recognizer {
             if(type == Types.MODULO) {
                 throw new IOException("Expected an operator or function but found " + currentLexeme);
             }
+            else if(type == Types.OBRACKET && ((currentNonTerminal == "ifStatement") || currentNonTerminal == "whileLoop")){
+                throw new IOException("Expected a condition for an if statement or a while loop but found "+ currentLexeme);
+            }
+            else if(type == Types.KEY && (currentNonTerminal == "functionCall")) {
+                throw new IOException("Found "+ currentLexeme + " while parsing a function call instead of the name of a function");
+            }
+            else if(type == Types.KEY && (currentNonTerminal == "declaration")) {
+                throw new IOException("Found "+ currentLexeme + " while parsing a function or variable declaration instead of the name of the function or variable");
+            }
             throw new IOException("Expected "+ type+ " but found " + currentLexeme + " while parsing a " + currentNonTerminal);
         }
     }
@@ -123,7 +132,7 @@ public class Recognizer {
         if(unaryPending()) {
             paramList();
         }
-        System.out.println("Completed a paramList");
+        System.out.println("Completed a paramList.");
     }
 
     private boolean declarationPending() {
@@ -166,7 +175,7 @@ public class Recognizer {
             unary();
             match(Types.CPAREN);
         }
-        System.out.println("Completed a unary");
+        System.out.println("Completed a unary.");
     }
     private void expression() throws IOException {
         currentNonTerminal = "expression";
@@ -209,6 +218,9 @@ public class Recognizer {
                 || expressionPending();
     }
     private boolean expressionPending()  {
+        return operatorPending();
+    }
+    private boolean operatorPending() {
         return check(Types.KEY) || check(Types.PLUS) || check(Types.MINUS) || check(Types.TIMES) || check(Types.DIVIDE) || check(Types.MODULO);
     }
 
@@ -253,7 +265,7 @@ public class Recognizer {
             statementList();
         }
         match(Types.CBRACE);
-        System.out.println("Completed a whileLoop");
+        System.out.println("Completed a whileLoop.");
     }
     private void boolStatement() throws IOException {
         currentNonTerminal = "boolStatement";
