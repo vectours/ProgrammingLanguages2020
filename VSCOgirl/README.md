@@ -60,6 +60,9 @@ Or instantiated in a single line:
 ```
 *Variables and functions are treated exactly the same in my language, but brackets and parentheses are used to differentiate between parameters and definitions. Parameters are always in square brackets, while function definitions are in parentheses*
 
+## Naming Variables and Functions
+In the spirit of VSCO filters, functions and variables are usually named using a pair of letters and numbers A-ZZ and 0-99.
+For example, a function or variable could be named F12 or AB1. This is not a requirement, because VSCOgirl supports variables and functions being named any alphanumeric phrase. This is possible because VSCOgirl doesn't have keywords beyond a couple built in functions.
 
 ## Calling Functions
 
